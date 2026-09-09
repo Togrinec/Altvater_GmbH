@@ -73,16 +73,22 @@ export default function LeistungenSeite() {
 
           {/* Bereiche Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {LEISTUNGEN.gewerbebau.bereiche.map((bereich) => {
+            {[
+              { ...LEISTUNGEN.gewerbebau.bereiche[0], href: "/leistungen/gewerbebau/fassaden" },
+              { ...LEISTUNGEN.gewerbebau.bereiche[1], href: "/leistungen/gewerbebau/daecher" },
+              { ...LEISTUNGEN.gewerbebau.bereiche[2], href: "/leistungen/gewerbebau/abdichtungen" },
+              { ...LEISTUNGEN.gewerbebau.bereiche[3], href: "/leistungen/gewerbebau/sonderanfertigungen" },
+            ].map((bereich) => {
               const Icon = ICON_MAP[bereich.icon] ?? Building2;
               return (
-                <div key={bereich.title} className="card p-6 group hover:-translate-y-1 transition-transform duration-300">
+                <Link key={bereich.title} href={bereich.href} className="card p-6 group hover:-translate-y-1 transition-transform duration-300">
                   <div className="w-12 h-12 bg-accent-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-accent-600 transition-colors">
                     <Icon size={22} className="text-accent-600 group-hover:text-white transition-colors" />
                   </div>
-                  <h3 className="font-bold text-brand-900 mb-2">{bereich.title}</h3>
+                  <h3 className="font-bold text-brand-900 mb-2 group-hover:text-accent-600 transition-colors">{bereich.title}</h3>
                   <p className="text-sm text-gray-500 leading-relaxed">{bereich.desc}</p>
-                </div>
+                  <span className="inline-flex items-center gap-1 text-xs text-accent-600 font-semibold mt-3 opacity-0 group-hover:opacity-100 transition-opacity">Mehr erfahren →</span>
+                </Link>
               );
             })}
           </div>
@@ -126,16 +132,22 @@ export default function LeistungenSeite() {
 
           {/* Bereiche Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {LEISTUNGEN.privatbau.bereiche.map((bereich) => {
+            {[
+              { ...LEISTUNGEN.privatbau.bereiche[0], href: "/leistungen/privatbau/blechdach" },
+              { ...LEISTUNGEN.privatbau.bereiche[1], href: "/leistungen/privatbau/dachrinnen" },
+              { ...LEISTUNGEN.privatbau.bereiche[2], href: "/leistungen/privatbau/kaminverkleidungen" },
+              { ...LEISTUNGEN.privatbau.bereiche[3], href: "/leistungen/privatbau/kundendienst" },
+            ].map((bereich) => {
               const Icon = ICON_MAP[bereich.icon] ?? Home;
               return (
-                <div key={bereich.title} className="card p-6 group hover:-translate-y-1 transition-transform duration-300">
+                <Link key={bereich.title} href={bereich.href} className="card p-6 group hover:-translate-y-1 transition-transform duration-300">
                   <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-brand-800 transition-colors">
                     <Icon size={22} className="text-brand-700 group-hover:text-white transition-colors" />
                   </div>
-                  <h3 className="font-bold text-brand-900 mb-2">{bereich.title}</h3>
+                  <h3 className="font-bold text-brand-900 mb-2 group-hover:text-accent-600 transition-colors">{bereich.title}</h3>
                   <p className="text-sm text-gray-500 leading-relaxed">{bereich.desc}</p>
-                </div>
+                  <span className="inline-flex items-center gap-1 text-xs text-accent-600 font-semibold mt-3 opacity-0 group-hover:opacity-100 transition-opacity">Mehr erfahren →</span>
+                </Link>
               );
             })}
           </div>

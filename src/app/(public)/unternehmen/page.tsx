@@ -164,18 +164,34 @@ export default function UnternehmenSeite() {
 
       {/* Team Placeholder */}
       <section className="section-padding bg-brand-900 text-white">
-        <div className="container-custom text-center">
-          <div className="w-16 h-16 bg-accent-600/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <Users size={28} className="text-accent-400" />
+        <div className="container-custom">
+          <div className="text-center mb-12">
+            <div className="w-16 h-16 bg-accent-600/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <Users size={28} className="text-accent-400" />
+            </div>
+            <h2 className="text-3xl font-bold text-white mb-4">Mehr über uns</h2>
+            <p className="text-gray-400 text-lg max-w-xl mx-auto mb-10">
+              Lernen Sie unser Team kennen, informieren Sie sich über unsere Qualitätsstandards
+              oder schauen Sie sich unsere offenen Stellen an.
+            </p>
           </div>
-          <h2 className="text-3xl font-bold text-white mb-4">Unser Team</h2>
-          <p className="text-gray-400 text-lg max-w-xl mx-auto mb-8">
-            Hinter jedem Produkt stecken erfahrene Handwerker, engagierte Techniker und
-            ein kompetentes Vertriebsteam. Gemeinsam machen wir Ihr Projekt möglich.
-          </p>
-          <Link href="/kontakt" className="btn-outline-white">
-            Team kennenlernen <ArrowRight size={16} />
-          </Link>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+            {[
+              { href: "/unternehmen/team",      emoji: "👥", titel: "Unser Team",              desc: "Lernen Sie die Menschen hinter Altvater GmbH kennen." },
+              { href: "/unternehmen/qualitaet", emoji: "🏆", titel: "Qualität & Zertifikate",  desc: "ISO 9001, Certfix und weitere Zertifizierungen." },
+              { href: "/unternehmen/karriere",  emoji: "💼", titel: "Karriere",                desc: "Offene Stellen und Initiativbewerbung." },
+            ].map((k) => (
+              <Link key={k.href} href={k.href}
+                className="bg-white/10 hover:bg-white/20 border border-white/10 rounded-2xl p-6 text-center group transition-all hover:-translate-y-1">
+                <div className="text-3xl mb-3">{k.emoji}</div>
+                <h3 className="font-bold text-white mb-1 group-hover:text-accent-300 transition-colors">{k.titel}</h3>
+                <p className="text-sm text-gray-400">{k.desc}</p>
+                <span className="inline-flex items-center gap-1 text-xs text-accent-400 font-semibold mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                  Mehr erfahren →
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 

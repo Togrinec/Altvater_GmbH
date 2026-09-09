@@ -8,18 +8,40 @@ import { NAV_ITEMS, COMPANY } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 const PRODUKTE_DROPDOWN = [
-  { label: "Entwässerungsrinnen", href: "/produkte/entwaesserungs-rinnen" },
-  { label: "Wasserspeier & Abläufe", href: "/produkte/wasserspeier-ablaeufe" },
-  { label: "Flachdachzubehör", href: "/produkte/flachdachzubehoer" },
-  { label: "Kieskörbe & Stichkanäle", href: "/produkte/kieskoerbe-stichkanaele" },
-  { label: "Kiesfangleisten", href: "/produkte/kiesfangleisten" },
+  { label: "Entwässerungsrinnen",          href: "/produkte/entwaesserungs-rinnen" },
+  { label: "Wasserspeier & Abläufe",       href: "/produkte/wasserspeier-ablaeufe" },
+  { label: "Flachdachzubehör",             href: "/produkte/flachdachzubehoer" },
+  { label: "Kieskörbe & Stichkanäle",      href: "/produkte/kieskoerbe-stichkanaele" },
+  { label: "Kiesfangleisten",              href: "/produkte/kiesfangleisten" },
   { label: "Müllboxen & Sonderanfertigungen", href: "/produkte/muellboxen" },
+];
+
+const LEISTUNGEN_DROPDOWN = [
+  { gruppe: "Gewerbebau", items: [
+    { label: "Fassaden",            href: "/leistungen/gewerbebau/fassaden" },
+    { label: "Dächer",              href: "/leistungen/gewerbebau/daecher" },
+    { label: "Abdichtungen",        href: "/leistungen/gewerbebau/abdichtungen" },
+    { label: "Sonderanfertigungen", href: "/leistungen/gewerbebau/sonderanfertigungen" },
+  ]},
+  { gruppe: "Privatbau", items: [
+    { label: "Blechdach & Verkleidungen", href: "/leistungen/privatbau/blechdach" },
+    { label: "Dachrinnen",               href: "/leistungen/privatbau/dachrinnen" },
+    { label: "Kaminverkleidungen",        href: "/leistungen/privatbau/kaminverkleidungen" },
+    { label: "Kundendienst",             href: "/leistungen/privatbau/kundendienst" },
+  ]},
+];
+
+const UNTERNEHMEN_DROPDOWN = [
+  { label: "Über uns",                href: "/unternehmen" },
+  { label: "Team",                    href: "/unternehmen/team" },
+  { label: "Qualität & Zertifikate",  href: "/unternehmen/qualitaet" },
+  { label: "Karriere",                href: "/unternehmen/karriere" },
 ];
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [produkteOpen, setProduktOpen] = useState(false);
+  const [aktiveDropdown, setAktiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -74,43 +96,31 @@ export default function Header() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-1">
             {NAV_ITEMS.map((item) => {
+
+              // ── Produkte-Dropdown ──────────────────────────────────
               if (item.label === "Produkte") {
                 return (
-                  <div
-                    key={item.href}
-                    className="relative"
-                    onMouseEnter={() => setProduktOpen(true)}
-                    onMouseLeave={() => setProduktOpen(false)}
-                  >
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        "flex items-center gap-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors",
-                        pathname.startsWith("/produkte")
-                          ? "text-accent-600 bg-accent-100"
-                          : "text-brand-700 hover:text-accent-600 hover:bg-gray-50"
-                      )}
-                    >
+                  <div key={item.href} className="relative"
+                    onMouseEnter={() => setAktiveDropdown("produkte")}
+                    onMouseLeave={() => setAktiveDropdown(null)}>
+                    <Link href={item.href} className={cn(
+                      "flex items-center gap-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors",
+                      pathname.startsWith("/produkte") ? "text-accent-600 bg-accent-100" : "text-brand-700 hover:text-accent-600 hover:bg-gray-50"
+                    )}>
                       {item.label}
-                      <ChevronDown size={14} className={cn("transition-transform", produkteOpen && "rotate-180")} />
+                      <ChevronDown size={14} className={cn("transition-transform", aktiveDropdown === "produkte" && "rotate-180")} />
                     </Link>
-                    {/* Dropdown */}
-                    {produkteOpen && (
+                    {aktiveDropdown === "produkte" && (
                       <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
                         {PRODUKTE_DROPDOWN.map((p) => (
-                          <Link
-                            key={p.href}
-                            href={p.href}
-                            className="block px-4 py-2.5 text-sm text-brand-700 hover:bg-gray-50 hover:text-accent-600 transition-colors"
-                          >
+                          <Link key={p.href} href={p.href}
+                            className="block px-4 py-2.5 text-sm text-brand-700 hover:bg-gray-50 hover:text-accent-600 transition-colors">
                             {p.label}
                           </Link>
                         ))}
                         <div className="border-t border-gray-100 mt-1 pt-1">
-                          <Link
-                            href="/produkte"
-                            className="block px-4 py-2.5 text-sm font-semibold text-accent-600 hover:bg-accent-100 transition-colors"
-                          >
+                          <Link href="/produkte"
+                            className="block px-4 py-2.5 text-sm font-semibold text-accent-600 hover:bg-accent-100 transition-colors">
                             Alle Produkte →
                           </Link>
                         </div>
@@ -119,17 +129,80 @@ export default function Header() {
                   </div>
                 );
               }
+
+              // ── Leistungen-Dropdown ────────────────────────────────
+              if (item.label === "Leistungen") {
+                return (
+                  <div key={item.href} className="relative"
+                    onMouseEnter={() => setAktiveDropdown("leistungen")}
+                    onMouseLeave={() => setAktiveDropdown(null)}>
+                    <Link href={item.href} className={cn(
+                      "flex items-center gap-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors",
+                      pathname.startsWith("/leistungen") ? "text-accent-600 bg-accent-100" : "text-brand-700 hover:text-accent-600 hover:bg-gray-50"
+                    )}>
+                      {item.label}
+                      <ChevronDown size={14} className={cn("transition-transform", aktiveDropdown === "leistungen" && "rotate-180")} />
+                    </Link>
+                    {aktiveDropdown === "leistungen" && (
+                      <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
+                        {LEISTUNGEN_DROPDOWN.map((gruppe) => (
+                          <div key={gruppe.gruppe}>
+                            <div className="px-4 pt-2 pb-1 text-xs font-bold text-gray-400 uppercase tracking-wider">{gruppe.gruppe}</div>
+                            {gruppe.items.map((i) => (
+                              <Link key={i.href} href={i.href}
+                                className="block px-4 py-2 text-sm text-brand-700 hover:bg-gray-50 hover:text-accent-600 transition-colors">
+                                {i.label}
+                              </Link>
+                            ))}
+                          </div>
+                        ))}
+                        <div className="border-t border-gray-100 mt-1 pt-1">
+                          <Link href="/leistungen"
+                            className="block px-4 py-2.5 text-sm font-semibold text-accent-600 hover:bg-accent-100 transition-colors">
+                            Alle Leistungen →
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              // ── Unternehmen-Dropdown ───────────────────────────────
+              if (item.label === "Unternehmen") {
+                return (
+                  <div key={item.href} className="relative"
+                    onMouseEnter={() => setAktiveDropdown("unternehmen")}
+                    onMouseLeave={() => setAktiveDropdown(null)}>
+                    <Link href={item.href} className={cn(
+                      "flex items-center gap-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors",
+                      pathname.startsWith("/unternehmen") ? "text-accent-600 bg-accent-100" : "text-brand-700 hover:text-accent-600 hover:bg-gray-50"
+                    )}>
+                      {item.label}
+                      <ChevronDown size={14} className={cn("transition-transform", aktiveDropdown === "unternehmen" && "rotate-180")} />
+                    </Link>
+                    {aktiveDropdown === "unternehmen" && (
+                      <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
+                        {UNTERNEHMEN_DROPDOWN.map((u) => (
+                          <Link key={u.href} href={u.href}
+                            className="block px-4 py-2.5 text-sm text-brand-700 hover:bg-gray-50 hover:text-accent-600 transition-colors">
+                            {u.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              // ── Einfacher Link ─────────────────────────────────────
               return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "px-4 py-2 rounded-lg font-medium text-sm transition-colors",
-                    pathname === item.href || pathname.startsWith(item.href + "/")
-                      ? "text-accent-600 bg-accent-100"
-                      : "text-brand-700 hover:text-accent-600 hover:bg-gray-50"
-                  )}
-                >
+                <Link key={item.href} href={item.href} className={cn(
+                  "px-4 py-2 rounded-lg font-medium text-sm transition-colors",
+                  pathname === item.href || pathname.startsWith(item.href + "/")
+                    ? "text-accent-600 bg-accent-100"
+                    : "text-brand-700 hover:text-accent-600 hover:bg-gray-50"
+                )}>
                   {item.label}
                 </Link>
               );
@@ -159,32 +232,57 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {mobileOpen && (
-          <div className="lg:hidden border-t border-gray-100 py-4 space-y-1">
+          <div className="lg:hidden border-t border-gray-100 py-4 space-y-1 max-h-[80vh] overflow-y-auto">
             {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
+              <div key={item.href}>
+                <Link href={item.href} className={cn(
                   "block px-4 py-3 rounded-lg font-medium transition-colors",
-                  pathname === item.href
-                    ? "text-accent-600 bg-accent-100"
-                    : "text-brand-700 hover:bg-gray-50"
+                  pathname === item.href ? "text-accent-600 bg-accent-100" : "text-brand-700 hover:bg-gray-50"
+                )}>
+                  {item.label}
+                </Link>
+
+                {/* Leistungen-Unterlinks mobil */}
+                {item.label === "Leistungen" && (
+                  <div className="ml-4 mt-1 space-y-0.5">
+                    {LEISTUNGEN_DROPDOWN.flatMap((g) => g.items).map((i) => (
+                      <Link key={i.href} href={i.href}
+                        className="block px-4 py-2 text-sm text-gray-500 hover:text-accent-600 hover:bg-gray-50 rounded-lg transition-colors">
+                        {i.label}
+                      </Link>
+                    ))}
+                  </div>
                 )}
-              >
-                {item.label}
-              </Link>
+
+                {/* Unternehmen-Unterlinks mobil */}
+                {item.label === "Unternehmen" && (
+                  <div className="ml-4 mt-1 space-y-0.5">
+                    {UNTERNEHMEN_DROPDOWN.slice(1).map((u) => (
+                      <Link key={u.href} href={u.href}
+                        className="block px-4 py-2 text-sm text-gray-500 hover:text-accent-600 hover:bg-gray-50 rounded-lg transition-colors">
+                        {u.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
             <div className="border-t border-gray-100 pt-3 mt-3 space-y-2">
+              <Link href="/downloads" className="block px-4 py-3 text-brand-700 font-medium hover:bg-gray-50 rounded-lg">
+                Downloads
+              </Link>
               <Link href="/portal" className="block px-4 py-3 text-accent-600 font-semibold">
                 🔐 Händler-Login
+              </Link>
+              <Link href="/portal/registrierung" className="block px-4 py-3 text-accent-600 font-semibold">
+                Händlerkonto beantragen
               </Link>
               <Link href="/kontakt" className="btn-primary w-full justify-center">
                 Angebot anfragen
               </Link>
               <div className="px-4 pt-2">
                 <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-2 text-brand-700">
-                  <Phone size={16} />
-                  {COMPANY.phone}
+                  <Phone size={16} />{COMPANY.phone}
                 </a>
               </div>
             </div>

@@ -54,6 +54,18 @@ export default function Footer() {
                   Downloads
                 </Link>
               </li>
+              <li>
+                <Link href="/unternehmen/team" className="text-sm text-gray-400 hover:text-white flex items-center gap-1.5 transition-colors group">
+                  <ArrowRight size={13} className="text-accent-500 group-hover:translate-x-1 transition-transform" />
+                  Team
+                </Link>
+              </li>
+              <li>
+                <Link href="/unternehmen/karriere" className="text-sm text-gray-400 hover:text-white flex items-center gap-1.5 transition-colors group">
+                  <ArrowRight size={13} className="text-accent-500 group-hover:translate-x-1 transition-transform" />
+                  Karriere
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -103,9 +115,12 @@ export default function Footer() {
             {/* Händlerportal CTA */}
             <div className="mt-6 p-4 bg-accent-600/20 border border-accent-600/30 rounded-xl">
               <p className="text-xs text-gray-300 mb-2">Fachbetrieb? Jetzt registrieren:</p>
-              <Link href="/portal" className="text-sm font-semibold text-accent-400 hover:text-white transition-colors flex items-center gap-1">
-                🔐 Händlerportal
+              <Link href="/portal" className="text-sm font-semibold text-accent-400 hover:text-white transition-colors flex items-center gap-1 mb-2">
+                🔐 Händler-Login
                 <ArrowRight size={13} />
+              </Link>
+              <Link href="/portal/registrierung" className="text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-1">
+                Konto beantragen →
               </Link>
             </div>
           </div>
