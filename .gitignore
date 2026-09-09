@@ -11,12 +11,14 @@ out/
 dist/
 build/
 
-# Env files
+# Env files (NIEMALS committen – enthalten Passwörter/API-Keys!)
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+# Vorlage darf committet werden:
+# .env.local.example → OK
 
 # Logs
 npm-debug.log*

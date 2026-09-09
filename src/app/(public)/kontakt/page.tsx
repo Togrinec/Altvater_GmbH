@@ -32,9 +32,19 @@ export default function KontaktSeite() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatus("sending");
-    // Platzhalter – hier API-Call einbauen
-    await new Promise((r) => setTimeout(r, 1200));
-    setStatus("sent");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Unbekannter Fehler");
+      setStatus("sent");
+    } catch (err) {
+      alert(`Fehler beim Senden: ${err instanceof Error ? err.message : "Bitte erneut versuchen."}`);
+      setStatus("idle");
+    }
   }
 
   return (
